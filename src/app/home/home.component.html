@@ -1,0 +1,97 @@
+<tbody class="container">
+    
+        <div class="select-list-year-container">
+            <select class="form-control select-list-year" (change)="refreshList($any($event.target).value)">
+                <option value="0">Sélectionnez une année</option>
+                <option *ngFor="let year of yearsList" value={{year}}>
+                    {{year}}
+                </option>
+            </select>
+        </div>
+
+        <div class="table-player" *ngFor="let team of teams">
+            <div class="table-title">
+                <span class="coach-name" *ngIf="team.Coach">Coach : {{team.Coach}}</span>
+                <button class="btn btn-light mr-1 add-player-button" title="Ajouter un joueur" (click)="addPlayerClick(team.Year)"
+                    data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+                        <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                        <path fill-rule="evenodd"
+                            d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
+                    </svg>
+                    Ajouter un joueur
+                </button>
+            </div>
+            <div style="padding: 10px;">Joueurs :</div>
+            <table class="table table-striped">
+                <thead>
+                    <tr class="table-hearder">
+                        <th>
+                            Numéro
+                        </th>
+                        <th>
+                            Prénom
+                        </th>
+                        <th>
+                            Nom
+                        </th>
+                        <th>
+                            Position
+                        </th>
+                        <th>Capitaine</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let player of team.Players">
+                        <td>{{player.Number}}</td>
+                        <td>{{player.Name}}</td>
+                        <td>{{player.LastName}}</td>
+                        <td>{{player.Position}}</td>
+                        <td *ngIf="!player.Is_Capitain">                            
+                            <button type="button"
+                                (click)="defineCaptain(player.Id, team.Year )" class="btn mr-1 no-captain" title="Définir comme Capitaine">
+                                 <i class="fa-solid fa-hockey-puck no-captain" (click)="defineCaptain(player.Id, team.Year )" title="Définir comme Capitaine"></i>
+                            </button>
+                        </td>
+                        <td *ngIf="player.Is_Capitain">
+                            <i class="fa-solid fa-hockey-puck mr-1 is-captain" style="padding-left:13px;"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+</tbody>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{modalTitle}}</h5>
+                <button type="button" class="btn-close" #closebutton data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="imput-group mb-3">
+                    <span class="input-group-text">Numéro du joueur</span>
+                    <input type="number" class="form-control" [(ngModel)]="playerNumber">
+                </div>
+                <div class="imput-group mb-3">
+                    <span class="input-group-text">Prénom du joueur</span>
+                    <input type="texte" class="form-control" [(ngModel)]="playerName">
+                </div>
+                <div class="imput-group mb-3">
+                    <span class="input-group-text">Nom du joueur</span>
+                    <input type="texte" class="form-control" [(ngModel)]="playerLastName">
+                </div>
+                <div class="imput-group mb-3">
+                    <span class="input-group-text">Position</span>
+                    <input type="texte" class="form-control" [(ngModel)]="playerPosition">
+                </div>
+                <button type="button" id="closeModal" (click)="createClick(teamYear)"
+                    class="btn btn-primary">Valider</button>
+            </div>
+        </div>
+    </div>
+</div>
